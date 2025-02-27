@@ -12,6 +12,84 @@ body {
   color: white;
 }
 
+/* Шапка */
+header {
+  background: var(--secondary);
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.exchange-title {
+  font-size: 2.5em;
+  color: var(--positive);
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Панель крипто-цен */
+.crypto-prices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 0 20px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.price-card {
+  background: var(--secondary);
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+  border-left: 4px solid transparent;
+}
+
+.price-card:hover {
+  transform: translateY(-3px);
+}
+
+.price-card.btc {
+  border-left-color: #f7931a;
+}
+.price-card.eth {
+  border-left-color: #627eea;
+}
+.price-card.sol {
+  border-left-color: #9945ff;
+}
+
+.symbol {
+  font-size: 0.9em;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.price {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.change {
+  font-size: 0.9em;
+  border-radius: 4px;
+  padding: 3px 6px;
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.positive {
+  color: var(--positive);
+}
+.negative {
+  color: var(--negative);
+}
+
+/* Основной контейнер */
 .container {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -21,6 +99,7 @@ body {
   margin: 0 auto;
 }
 
+/* График */
 .chart-container {
   background: var(--secondary);
   border-radius: 12px;
@@ -28,6 +107,7 @@ body {
   height: 400px;
 }
 
+/* Список ордеров */
 .orderbook {
   background: var(--secondary);
   border-radius: 12px;
@@ -54,6 +134,7 @@ body {
   color: var(--negative);
 }
 
+/* Торговая панель */
 .trade-panel {
   background: var(--secondary);
   padding: 20px;
@@ -74,16 +155,18 @@ button {
 }
 
 input:focus {
-  outline: 1px solid var(--positive);
+  outline: 2px solid var(--positive);
 }
 
 button {
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
+  font-weight: bold;
 }
 
 button:hover {
   opacity: 0.9;
+  transform: scale(1.02);
 }
 
 .buy-btn {
@@ -96,6 +179,7 @@ button:hover {
   color: #000;
 }
 
+/* Адаптивность */
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
@@ -107,5 +191,19 @@ button:hover {
 
   .chart-container {
     height: 300px;
+  }
+
+  .crypto-prices {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .exchange-title {
+    font-size: 1.8em;
+  }
+
+  .price-card {
+    padding: 10px;
   }
 }
