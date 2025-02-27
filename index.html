@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crypto Exchange</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="chart-container">
+        <h2>BTC/USDT</h2>
+        <canvas id="priceChart"></canvas>
+      </div>
+
+      <div class="orderbook">
+        <h3>Ордера</h3>
+        <table class="order-table">
+          <tbody id="orderList"></tbody>
+        </table>
+      </div>
+
+      <div class="trade-panel">
+        <input type="number" id="priceInput" placeholder="Цена" />
+        <input type="number" id="amountInput" placeholder="Количество" />
+        <button class="buy-btn" onclick="placeOrder('buy')">Купить</button>
+        <button class="sell-btn" onclick="placeOrder('sell')">Продать</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

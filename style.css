@@ -1,0 +1,111 @@
+:root {
+  --primary: #1a1f2d;
+  --secondary: #2d3245;
+  --positive: #16c784;
+  --negative: #ea3943;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  background: var(--primary);
+  color: white;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.chart-container {
+  background: var(--secondary);
+  border-radius: 12px;
+  padding: 20px;
+  height: 400px;
+}
+
+.orderbook {
+  background: var(--secondary);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.order-table td {
+  padding: 8px;
+  text-align: right;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bid-row {
+  color: var(--positive);
+}
+.ask-row {
+  color: var(--negative);
+}
+
+.trade-panel {
+  background: var(--secondary);
+  padding: 20px;
+  border-radius: 12px;
+  grid-column: 2;
+}
+
+input,
+button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: 1px solid var(--positive);
+}
+
+button {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.buy-btn {
+  background: var(--positive);
+  color: #000;
+}
+
+.sell-btn {
+  background: var(--negative);
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .trade-panel {
+    grid-column: 1;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
+}
