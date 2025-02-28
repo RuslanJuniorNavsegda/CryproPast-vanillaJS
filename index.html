@@ -1,67 +1,94 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoPast Exchange</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-    <!-- Переключатель тем -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CryptoPast Exchange & Wallet</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://kit.fontawesome.com/ваш-набор-fontawesome.js"></script>
+  </head>
+  <body>
     <div class="theme-switcher" onclick="toggleTheme()">
-        <div class="switch-handle"></div>
+      <div class="switch-handle"></div>
     </div>
 
-    <!-- Шапка -->
     <header>
-        <h1 class="exchange-title">CryptoPast</h1>
+      <h1 class="exchange-title">CryptoPast</h1>
+      <p class="tagline">Торгуй. Храни. Зарабатывай</p>
     </header>
 
-    <!-- Секция с ценами -->
+    <section class="wallet-section">
+      <div class="wallet-overview">
+        <div class="wallet-card glass-card">
+          <h2><i class="fas fa-wallet"></i> CryptoPast Wallet</h2>
+          <div class="balance">
+            <span class="amount">$12,450.00</span>
+            <span class="change positive">+3.2% за неделю</span>
+          </div>
+          <button class="cta-btn">Подключить кошелёк</button>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card glass-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Армированная защита</h3>
+            <p>Многоуровневое шифрование и холодное хранение</p>
+          </div>
+          <div class="feature-card glass-card">
+            <i class="fas fa-percentage"></i>
+            <h3>До 18% APY</h3>
+            <p>Стейкинг с самой высокой доходностью в индустрии</p>
+          </div>
+          <div class="feature-card glass-card">
+            <i class="fas fa-bolt"></i>
+            <h3>Мгновенные переводы</h3>
+            <p>0% комиссии на внутренние транзакции</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="crypto-prices">
-        <div class="price-card btc">
-            <span class="symbol">BTC/USDT</span>
-            <span class="price">$45,230.50</span>
-            <span class="change positive">+2.4%</span>
-        </div>
-        <div class="price-card eth">
-            <span class="symbol">ETH/USDT</span>
-            <span class="price">$2,450.75</span>
-            <span class="change negative">-1.2%</span>
-        </div>
-        <div class="price-card sol">
-            <span class="symbol">SOL/USDT</span>
-            <span class="price">$98.20</span>
-            <span class="change positive">+5.1%</span>
-        </div>
+      <div class="price-card btc">
+        <span class="symbol">BTC/USDT</span>
+        <span class="price">$45,230.50</span>
+        <span class="change positive">+2.4%</span>
+      </div>
+      <div class="price-card eth">
+        <span class="symbol">ETH/USDT</span>
+        <span class="price">$2,450.75</span>
+        <span class="change negative">-1.2%</span>
+      </div>
+      <div class="price-card sol">
+        <span class="symbol">SOL/USDT</span>
+        <span class="price">$98.20</span>
+        <span class="change positive">+5.1%</span>
+      </div>
     </div>
 
-    <!-- Основной контейнер -->
     <div class="container">
-        <!-- График -->
-        <div class="chart-container">
-            <h2>BTC/USDT</h2>
-            <canvas id="priceChart"></canvas>
-        </div>
+      <div class="chart-container">
+        <h2>BTC/USDT</h2>
+        <canvas id="priceChart"></canvas>
+      </div>
 
-        <!-- Список ордеров -->
-        <div class="orderbook">
-            <h3>Ордера</h3>
-            <table class="order-table">
-                <tbody id="orderList"></tbody>
-            </table>
-        </div>
+      <div class="orderbook">
+        <h3>Ордера</h3>
+        <table class="order-table">
+          <tbody id="orderList"></tbody>
+        </table>
+      </div>
 
-        <!-- Торговая панель -->
-        <div class="trade-panel">
-            <input type="number" id="priceInput" placeholder="Цена">
-            <input type="number" id="amountInput" placeholder="Количество">
-            <button class="buy-btn" onclick="placeOrder('buy')">Купить</button>
-            <button class="sell-btn" onclick="placeOrder('sell')">Продать</button>
-        </div>
+      <div class="trade-panel glass-card">
+        <input type="number" id="priceInput" placeholder="Цена" />
+        <input type="number" id="amountInput" placeholder="Количество" />
+        <button class="buy-btn" onclick="placeOrder('buy')">Купить</button>
+        <button class="sell-btn" onclick="placeOrder('sell')">Продать</button>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  </body>
 </html>

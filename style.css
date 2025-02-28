@@ -1,298 +1,374 @@
 :root {
-    /* Светлая тема */
-    --primary-light: #ffffff;
-    --secondary-light: #f8f9fa;
-    --text-light: #1a1f2d;
-    --accent-light: #2172E5;
+  /* Светлая тема */
+  --primary-light: #ffffff;
+  --secondary-light: #f8f9fa;
+  --text-light: #1a1f2d;
+  --accent-light: #2172e5;
 
-    /* Темная тема */
-    --primary-dark: #1a1f2d;
-    --secondary-dark: #2d3245;
-    --text-dark: #ffffff;
-    --accent-dark: #16c784;
+  /* Темная тема */
+  --primary-dark: #1a1f2d;
+  --secondary-dark: #2d3245;
+  --text-dark: #ffffff;
+  --accent-dark: #16c784;
 
-    /* Общие цвета */
-    --positive: #16c784;
-    --negative: #ea3943;
-    --glass: rgba(255,255,255,0.1);
+  --positive: #16c784;
+  --negative: #ea3943;
+  --glass: rgba(255, 255, 255, 0.1);
 }
 
 body {
-    --primary: var(--primary-dark);
-    --secondary: var(--secondary-dark);
-    --text: var(--text-dark);
-    --accent: var(--accent-dark);
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    background: var(--primary);
-    color: var(--text);
-    transition: all 0.3s ease;
+  --primary: var(--primary-dark);
+  --secondary: var(--secondary-dark);
+  --text: var(--text-dark);
+  --accent: var(--accent-dark);
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  background: var(--primary);
+  color: var(--text);
+  transition: all 0.3s ease;
 }
 
 body.light-theme {
-    --primary: var(--primary-light);
-    --secondary: var(--secondary-light);
-    --text: var(--text-light);
-    --accent: var(--accent-light);
+  --primary: var(--primary-light);
+  --secondary: var(--secondary-light);
+  --text: var(--text-light);
+  --accent: var(--accent-light);
 }
 
-/* Переключатель тем */
 .theme-switcher {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 26px;
-    background: var(--secondary);
-    border-radius: 13px;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 26px;
+  background: var(--secondary);
+  border-radius: 13px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .switch-handle {
-    position: absolute;
-    left: 3px;
-    top: 3px;
-    width: 20px;
-    height: 20px;
-    background: var(--accent);
-    border-radius: 50%;
-    transition: transform 0.3s ease;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  background: var(--accent);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
 }
 
 body.light-theme .switch-handle {
-    transform: translateX(24px);
+  transform: translateX(24px);
 }
 
-/* Шапка */
 header {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-    padding: 40px 20px;
-    margin-bottom: 30px;
-    position: relative;
-    overflow: hidden;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+  padding: 40px 20px;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
 }
 
 header::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: var(--primary);
-    transform: skewY(-2deg);
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: var(--primary);
+  transform: skewY(-2deg);
 }
 
 .exchange-title {
-    font-size: 2.8em;
-    font-weight: 800;
-    text-align: center;
-    margin: 0;
-    text-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    position: relative;
-    z-index: 1;
+  font-size: 2.8em;
+  font-weight: 800;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Секция цен */
+.tagline {
+  text-align: center;
+  font-size: 1.2em;
+  opacity: 0.9;
+  margin-top: -10px;
+}
+
+.wallet-section {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wallet-overview {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.wallet-card {
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  border-radius: 20px;
+}
+
+.wallet-card h2 {
+  margin: 0 0 25px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.8em;
+}
+
+.balance {
+  margin: 30px 0;
+}
+
+.amount {
+  font-size: 2.5em;
+  font-weight: 800;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.feature-card {
+  padding: 25px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+}
+
+.feature-card i {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  background: linear-gradient(45deg, var(--accent), var(--positive));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cta-btn {
+  background: var(--positive);
+  color: #000 !important;
+  padding: 15px 40px !important;
+  border-radius: 50px !important;
+  font-weight: 700 !important;
+  font-size: 1.1em !important;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(22, 199, 132, 0.3);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
 .crypto-prices {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 0 20px 30px;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0 20px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .price-card {
-    background: var(--secondary);
-    border-radius: 16px;
-    padding: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+  padding: 20px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
 }
 
 .price-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
-.price-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, var(--glass) 0%, transparent 100%);
-    pointer-events: none;
+.btc {
+  border-left: 4px solid #f7931a;
 }
-
-.btc { border-left: 4px solid #f7931a }
-.eth { border-left: 4px solid #627eea }
-.sol { border-left: 4px solid #9945ff }
+.eth {
+  border-left: 4px solid #627eea;
+}
+.sol {
+  border-left: 4px solid #9945ff;
+}
 
 .symbol {
-    font-size: 0.95em;
-    color: var(--text);
-    opacity: 0.8;
-    margin-bottom: 8px;
-    font-weight: 500;
+  font-size: 0.95em;
+  color: var(--text);
+  opacity: 0.8;
+  margin-bottom: 8px;
 }
 
 .price {
-    font-size: 1.5em;
-    font-weight: 700;
-    margin-bottom: 5px;
-    letter-spacing: -0.5px;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
 .change {
-    font-size: 0.95em;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 6px;
-    display: inline-block;
-    background: var(--glass);
+  font-size: 0.95em;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: inline-block;
 }
 
-.positive { color: var(--positive) }
-.negative { color: var(--negative) }
+.positive {
+  color: var(--positive);
+}
+.negative {
+  color: var(--negative);
+}
 
-/* Основной контейнер */
 .container {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 25px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 25px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* График */
 .chart-container {
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    border-radius: 16px;
-    padding: 25px;
-    height: 500px;
-    border: 1px solid var(--glass);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  border-radius: 16px;
+  padding: 25px;
+  height: 500px;
+  border: 1px solid var(--glass);
 }
 
-/* Список ордеров */
 .orderbook {
-    background: var(--secondary);
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid var(--glass);
+  background: var(--secondary);
+  border-radius: 16px;
+  padding: 20px;
 }
 
 .order-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95em;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
 }
 
 .order-table td {
-    padding: 10px;
-    text-align: right;
-    border-bottom: 1px solid var(--glass);
+  padding: 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--glass);
 }
 
-.bid-row { color: var(--positive) }
-.ask-row { color: var(--negative) }
-
-/* Торговая панель */
 .trade-panel {
-    background: var(--secondary);
-    padding: 25px;
-    border-radius: 16px;
-    border: 1px solid var(--glass);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  padding: 25px;
+  border-radius: 16px;
 }
 
-input, button {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 8px;
-    background: var(--glass);
-    color: var(--text);
-    font-size: 16px;
-    transition: all 0.2s ease;
+input,
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: var(--glass);
+  color: var(--text);
+  font-size: 16px;
+  transition: all 0.2s ease;
 }
 
 input:focus {
-    outline: 2px solid var(--accent);
-    box-shadow: 0 0 0 4px rgba(33,114,229,0.1);
+  outline: 2px solid var(--accent);
+  box-shadow: 0 0 0 4px rgba(33, 114, 229, 0.1);
 }
 
 button {
-    cursor: pointer;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(5px);
-}
-
-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--glass);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-button:hover::after {
-    opacity: 0.1;
+  cursor: pointer;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
 }
 
 .buy-btn {
-    background: var(--positive);
-    color: #000 !important;
+  background: var(--positive);
+  color: #000 !important;
 }
 
 .sell-btn {
-    background: var(--negative);
-    color: #000 !important;
+  background: var(--negative);
+  color: #000 !important;
 }
 
-/* Адаптивность */
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 1024px) {
+  .wallet-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-container {
+    height: 400px;
+  }
+}
+
 @media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
+  .container {
+    grid-template-columns: 1fr;
+  }
 
-    .chart-container {
-        height: 400px;
-    }
-
-    .exchange-title {
-        font-size: 2.2em;
-    }
+  .exchange-title {
+    font-size: 2.2em;
+  }
 }
 
 @media (max-width: 480px) {
-    .crypto-prices {
-        grid-template-columns: 1fr;
-    }
+  .amount {
+    font-size: 1.8em;
+  }
 
-    .price-card {
-        padding: 15px;
-    }
+  .feature-card {
+    padding: 15px;
+  }
 
-    .exchange-title {
-        font-size: 1.8em;
-    }
+  .price-card {
+    padding: 15px;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.glass-card {
+  animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
 }

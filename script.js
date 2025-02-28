@@ -11,6 +11,12 @@ const cryptoData = [
   { symbol: "SOL/USDT", price: 98.2, change: 5.1 },
 ];
 
+let wallet = {
+  balance: 12450.0,
+  weeklyChange: 3.2,
+  connected: false,
+};
+
 let chart;
 let wsConnection = null;
 
@@ -19,11 +25,16 @@ document.addEventListener("DOMContentLoaded", () => {
   initChart();
   updateOrderBook();
   updateCryptoPrices();
+  updateWalletDisplay();
   initWebSocket();
+  initAnimations();
+  initWalletButton();
 });
 
 function initChart() {
   const ctx = document.getElementById("priceChart").getContext("2d");
+  if (chart) chart.destroy();
+
   chart = new Chart(ctx, {
     type: "line",
     data: {
@@ -38,10 +49,8 @@ function initChart() {
           borderWidth: 2,
           pointRadius: 0,
           tension: 0.4,
-          fill: {
-            target: "origin",
-            above: "rgba(33,114,229,0.1)",
-          },
+          backgroundColor: "rgba(33,114,229,0.1)",
+          fill: true,
         },
       ],
     },
@@ -84,9 +93,10 @@ function initChart() {
 }
 
 function generateMockChartData() {
-  return Array(24)
-    .fill()
-    .map(() => Math.random() * 1000 + 45000);
+  return Array.from(
+    { length: 24 },
+    (_, i) => 45000 + Math.sin(i * 0.5) * 1000 + Math.random() * 500
+  );
 }
 
 function generateTimeLabels() {
@@ -166,6 +176,7 @@ function placeOrder(type) {
   updateChart();
   clearInputs();
 }
+
 function clearInputs() {
   document.getElementById("priceInput").value = "";
   document.getElementById("amountInput").value = "";
@@ -240,6 +251,67 @@ function updateChartColors() {
     getComputedStyle(document.body).getPropertyValue("--text")
   )}, 0.1)`;
   chart.update();
+}
+
+function updateWalletDisplay() {
+  document.querySelector(
+    ".amount"
+  ).textContent = `$${wallet.balance.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+  })}`;
+  document.querySelector(".wallet-card .change").textContent = `${
+    wallet.weeklyChange >= 0 ? "+" : ""
+  }${wallet.weeklyChange.toFixed(1)}% за неделю`;
+}
+
+function initWalletButton() {
+  document.querySelector(".cta-btn").addEventListener("click", () => {
+    wallet.connected = !wallet.connected;
+    updateWalletButtonState();
+    showNotification(
+      wallet.connected ? "Кошелек подключен" : "Кошелек отключен"
+    );
+  });
+}
+
+function updateWalletButtonState() {
+  const btn = document.querySelector(".cta-btn");
+  btn.textContent = wallet.connected
+    ? "Управление кошельком"
+    : "Подключить кошелёк";
+  btn.style.backgroundColor = wallet.connected
+    ? "var(--accent)"
+    : "var(--positive)";
+}
+
+function showNotification(message) {
+  const notification = document.createElement("div");
+  notification.className = "notification";
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add("hide");
+    setTimeout(() => notification.remove(), 300);
+  }, 2000);
+}
+
+function initAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = 1;
+        entry.target.style.transform = "translateY(0)";
+      }
+    });
+  });
+
+  document.querySelectorAll(".glass-card").forEach((card) => {
+    card.style.opacity = 0;
+    card.style.transform = "translateY(30px)";
+    card.style.transition = "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
+    observer.observe(card);
+  });
 }
 
 function updateChart() {
