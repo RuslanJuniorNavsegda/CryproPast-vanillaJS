@@ -6,7 +6,10 @@
     <title>CryptoPast Exchange & Wallet</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://kit.fontawesome.com/ваш-набор-fontawesome.js"></script>
+    <script
+      src="https://formspree.io/f/movjgjkn"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div class="theme-switcher" onclick="toggleTheme()">
@@ -49,46 +52,130 @@
       </div>
     </section>
 
-    <div class="crypto-prices">
-      <div class="price-card btc">
-        <span class="symbol">BTC/USDT</span>
-        <span class="price">$45,230.50</span>
-        <span class="change positive">+2.4%</span>
-      </div>
-      <div class="price-card eth">
-        <span class="symbol">ETH/USDT</span>
-        <span class="price">$2,450.75</span>
-        <span class="change negative">-1.2%</span>
-      </div>
-      <div class="price-card sol">
-        <span class="symbol">SOL/USDT</span>
-        <span class="price">$98.20</span>
-        <span class="change positive">+5.1%</span>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="chart-container">
-        <h2>BTC/USDT</h2>
-        <canvas id="priceChart"></canvas>
+    <section class="trading-steps">
+      <div class="section-header">
+        <h2>Начать торговать за 3 шага</h2>
+        <p>Простой путь к вашей первой сделке</p>
       </div>
 
-      <div class="orderbook">
-        <h3>Ордера</h3>
-        <table class="order-table">
-          <tbody id="orderList"></tbody>
-        </table>
+      <div class="steps-container">
+        <div class="step-card glass-card">
+          <div class="step-number">1</div>
+          <i class="fas fa-user-plus"></i>
+          <h3>Создать аккаунт</h3>
+          <p>Быстрая регистрация за 2 минуты с подтверждением по email</p>
+        </div>
+
+        <div class="step-card glass-card">
+          <div class="step-number">2</div>
+          <i class="fas fa-wallet"></i>
+          <h3>Внести депозит</h3>
+          <p>Пополните счет через карту, крипту или PayPal</p>
+        </div>
+
+        <div class="step-card glass-card">
+          <div class="step-number">3</div>
+          <i class="fas fa-chart-line"></i>
+          <h3>Начать торговать</h3>
+          <p>Выберите актив и совершите свою первую сделку</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="crypto-prices-section">
+      <div class="crypto-prices">
+        <div class="price-card btc">
+          <span class="symbol">BTC/USDT</span>
+          <span class="price">$45,230.50</span>
+          <span class="change positive">+2.4%</span>
+        </div>
+        <div class="price-card eth">
+          <span class="symbol">ETH/USDT</span>
+          <span class="price">$2,450.75</span>
+          <span class="change negative">-1.2%</span>
+        </div>
+        <div class="price-card sol">
+          <span class="symbol">SOL/USDT</span>
+          <span class="price">$98.20</span>
+          <span class="change positive">+5.1%</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="trading-interface">
+      <div class="container">
+        <div class="chart-container">
+          <h2>BTC/USDT</h2>
+          <canvas id="priceChart"></canvas>
+        </div>
+
+        <div class="orderbook">
+          <h3>Ордера</h3>
+          <table class="order-table">
+            <tbody id="orderList"></tbody>
+          </table>
+        </div>
+
+        <div class="trade-panel glass-card">
+          <input type="number" id="priceInput" placeholder="Цена" />
+          <input type="number" id="amountInput" placeholder="Количество" />
+          <button class="buy-btn" onclick="placeOrder('buy')">Купить</button>
+          <button class="sell-btn" onclick="placeOrder('sell')">Продать</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section">
+      <div class="section-header">
+        <h2><i class="fas fa-comments"></i> Свяжитесь с нами</h2>
+        <p>Есть вопросы? Мы ответим в течение 15 минут</p>
       </div>
 
-      <div class="trade-panel glass-card">
-        <input type="number" id="priceInput" placeholder="Цена" />
-        <input type="number" id="amountInput" placeholder="Количество" />
-        <button class="buy-btn" onclick="placeOrder('buy')">Купить</button>
-        <button class="sell-btn" onclick="placeOrder('sell')">Продать</button>
+      <form
+        class="contact-form"
+        action="https://formspree.io/f/mbldndar"
+        method="POST"
+      >
+        <div class="form-group">
+          <label for="email">
+            <i class="fas fa-envelope"></i> Ваш Email:
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="example@cryptopast.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="message">
+            <i class="fas fa-comment-dots"></i> Сообщение:
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Опишите ваш вопрос..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="cta-btn">
+          <i class="fas fa-paper-plane"></i> Отправить
+        </button>
+      </form>
+    </section>
+
+    <footer class="glass-card">
+      <p>© 2024 CryptoPast. Все права защищены</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
       </div>
-    </div>
+    </footer>
 
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   </body>
 </html>

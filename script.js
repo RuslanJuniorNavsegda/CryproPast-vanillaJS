@@ -22,18 +22,20 @@ let wsConnection = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   loadSavedTheme();
+  initChart();
   updateOrderBook();
   updateCryptoPrices();
   updateWalletDisplay();
   initWebSocket();
   initAnimations();
   initWalletButton();
+  initFormValidation();
 });
 
 function initChart() {
-  const ctx = document.getElementById("priceChart").getContext("2d");
   if (chart) chart.destroy();
 
+  const ctx = document.getElementById("priceChart").getContext("2d");
   chart = new Chart(ctx, {
     type: "line",
     data: {
@@ -53,41 +55,7 @@ function initChart() {
         },
       ],
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: false,
-          ticks: {
-            color: () =>
-              getComputedStyle(document.body).getPropertyValue("--text"),
-            callback: (value) => `$${value.toLocaleString()}`,
-          },
-          grid: {
-            color: () =>
-              `rgba(${hexToRgb(
-                getComputedStyle(document.body).getPropertyValue("--text")
-              )}, 0.1)`,
-          },
-        },
-        x: {
-          ticks: {
-            color: () =>
-              getComputedStyle(document.body).getPropertyValue("--text"),
-          },
-          grid: {
-            color: () =>
-              `rgba(${hexToRgb(
-                getComputedStyle(document.body).getPropertyValue("--text")
-              )}, 0.1)`,
-          },
-        },
-      },
-      plugins: {
-        legend: { display: false },
-      },
-    },
+    options: getChartOptions(),
   });
 }
 
@@ -112,29 +80,75 @@ function generateTimeLabels() {
     .reverse();
 }
 
-function hexToRgb(hex) {
-  hex = hex.replace("#", "");
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-  return `${r}, ${g}, ${b}`;
+function getChartOptions() {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: false,
+        ticks: {
+          color: () =>
+            getComputedStyle(document.body).getPropertyValue("--text"),
+          callback: (value) => `$${value.toLocaleString()}`,
+        },
+        grid: {
+          color: () =>
+            `rgba(${hexToRgb(
+              getComputedStyle(document.body).getPropertyValue("--text")
+            )}, 0.1)`,
+        },
+      },
+      x: {
+        ticks: {
+          color: () =>
+            getComputedStyle(document.body).getPropertyValue("--text"),
+        },
+        grid: {
+          color: () =>
+            `rgba(${hexToRgb(
+              getComputedStyle(document.body).getPropertyValue("--text")
+            )}, 0.1)`,
+        },
+      },
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: true,
+        mode: "index",
+        intersect: false,
+        backgroundColor: getComputedStyle(document.body).getPropertyValue(
+          "--secondary"
+        ),
+        titleColor: getComputedStyle(document.body).getPropertyValue("--text"),
+        bodyColor: getComputedStyle(document.body).getPropertyValue("--text"),
+      },
+    },
+  };
 }
 
-function updateCryptoPrices() {
-  const container = document.querySelector(".crypto-prices");
-  container.innerHTML = cryptoData
-    .map(
-      (coin) => `
-        <div class="price-card ${coin.symbol.split("/")[0].toLowerCase()}">
-            <span class="symbol">${coin.symbol}</span>
-            <span class="price">$${coin.price.toFixed(2)}</span>
-            <span class="change ${coin.change >= 0 ? "positive" : "negative"}">
-                ${coin.change >= 0 ? "+" : ""}${coin.change.toFixed(1)}%
-            </span>
-        </div>
-    `
-    )
-    .join("");
+function toggleTheme() {
+  const body = document.body;
+  body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "theme",
+    body.classList.contains("light-theme") ? "light" : "dark"
+  );
+  refreshChart();
+}
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.body.classList.toggle("light-theme", savedTheme === "light");
+  refreshChart();
+}
+
+function refreshChart() {
+  if (chart) {
+    chart.destroy();
+    initChart();
+  }
 }
 
 function updateOrderBook() {
@@ -154,13 +168,10 @@ function updateOrderBook() {
 }
 
 function placeOrder(type) {
-  const priceInput = document.getElementById("priceInput");
-  const amountInput = document.getElementById("amountInput");
+  const price = parseFloat(document.getElementById("priceInput").value);
+  const amount = parseFloat(document.getElementById("amountInput").value);
 
-  const price = parseFloat(priceInput.value);
-  const amount = parseFloat(amountInput.value);
-
-  if (!price || !amount || price <= 0 || amount <= 0) {
+  if (!isValidOrder(price, amount)) {
     showError("Некорректные значения цены или количества");
     return;
   }
@@ -176,83 +187,13 @@ function placeOrder(type) {
   clearInputs();
 }
 
+function isValidOrder(price, amount) {
+  return !isNaN(price) && !isNaN(amount) && price > 0 && amount > 0;
+}
+
 function clearInputs() {
   document.getElementById("priceInput").value = "";
   document.getElementById("amountInput").value = "";
-}
-
-function showError(message) {
-  const errorDiv = document.createElement("div");
-  errorDiv.className = "error-message";
-  errorDiv.textContent = message;
-  document.body.appendChild(errorDiv);
-  setTimeout(() => errorDiv.remove(), 3000);
-}
-
-function initWebSocket() {
-  wsConnection = new WebSocket(
-    "wss://stream.binance.com:9443/ws/btcusdt@trade"
-  );
-
-  wsConnection.onmessage = (event) => {
-    const tradeData = JSON.parse(event.data);
-    handleRealTimeData(tradeData);
-  };
-
-  wsConnection.onerror = (error) => {
-    console.error("WebSocket Error:", error);
-    showError("Ошибка подключения к данным");
-  };
-}
-
-function handleRealTimeData(data) {
-  const btc = cryptoData.find((c) => c.symbol === "BTC/USDT");
-  const newPrice = parseFloat(data.p);
-  const change = (((newPrice - btc.price) / btc.price) * 100).toFixed(1);
-
-  btc.price = newPrice;
-  btc.change = parseFloat(change);
-
-  chart.data.datasets[0].data.shift();
-  chart.data.datasets[0].data.push(newPrice);
-  chart.update();
-
-  updateCryptoPrices();
-}
-
-function toggleTheme() {
-  const body = document.body;
-  body.classList.toggle("light-theme");
-  localStorage.setItem(
-    "theme",
-    body.classList.contains("light-theme") ? "light" : "dark"
-  );
-
-  if (chart) chart.destroy();
-  initChart();
-}
-
-function loadSavedTheme() {
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  document.body.classList.toggle("light-theme", savedTheme === "light");
-
-  initChart();
-}
-
-function updateChartColors() {
-  chart.options.scales.x.ticks.color = getComputedStyle(
-    document.body
-  ).getPropertyValue("--text");
-  chart.options.scales.y.ticks.color = getComputedStyle(
-    document.body
-  ).getPropertyValue("--text");
-  chart.options.scales.y.grid.color = `rgba(${hexToRgb(
-    getComputedStyle(document.body).getPropertyValue("--text")
-  )}, 0.1)`;
-  chart.options.scales.x.grid.color = `rgba(${hexToRgb(
-    getComputedStyle(document.body).getPropertyValue("--text")
-  )}, 0.1)`;
-  chart.update();
 }
 
 function updateWalletDisplay() {
@@ -261,6 +202,7 @@ function updateWalletDisplay() {
   ).textContent = `$${wallet.balance.toLocaleString(undefined, {
     minimumFractionDigits: 2,
   })}`;
+
   document.querySelector(".wallet-card .change").textContent = `${
     wallet.weeklyChange >= 0 ? "+" : ""
   }${wallet.weeklyChange.toFixed(1)}% за неделю`;
@@ -286,6 +228,58 @@ function updateWalletButtonState() {
     : "var(--positive)";
 }
 
+function initWebSocket() {
+  wsConnection = new WebSocket(
+    "wss://stream.binance.com:9443/ws/btcusdt@trade"
+  );
+
+  wsConnection.onmessage = (event) => {
+    const tradeData = JSON.parse(event.data);
+    updateRealTimeData(tradeData);
+  };
+
+  wsConnection.onerror = (error) => {
+    console.error("WebSocket Error:", error);
+    showError("Ошибка подключения к данным");
+  };
+}
+
+function updateRealTimeData(data) {
+  const btc = cryptoData.find((c) => c.symbol === "BTC/USDT");
+  const newPrice = parseFloat(data.p);
+  const change = (((newPrice - btc.price) / btc.price) * 100).toFixed(1);
+
+  btc.price = newPrice;
+  btc.change = parseFloat(change);
+
+  updateChartData(newPrice);
+  updateCryptoPrices();
+}
+
+function updateChartData(newPrice) {
+  if (chart) {
+    chart.data.datasets[0].data.shift();
+    chart.data.datasets[0].data.push(newPrice);
+    chart.update();
+  }
+}
+
+function hexToRgb(hex) {
+  hex = hex.replace("#", "");
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  return `${r}, ${g}, ${b}`;
+}
+
+function showError(message) {
+  const errorDiv = document.createElement("div");
+  errorDiv.className = "error-message";
+  errorDiv.textContent = message;
+  document.body.appendChild(errorDiv);
+  setTimeout(() => errorDiv.remove(), 3000);
+}
+
 function showNotification(message) {
   const notification = document.createElement("div");
   notification.className = "notification";
@@ -299,24 +293,63 @@ function showNotification(message) {
 }
 
 function initAnimations() {
+  animateElements(".glass-card", 0.1);
+  animateElements(".price-card", 0.2);
+}
+
+function animateElements(selector, delayStep) {
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+    entries.forEach((entry, index) => {
       if (entry.isIntersecting) {
         entry.target.style.opacity = 1;
         entry.target.style.transform = "translateY(0)";
+        entry.target.style.transitionDelay = `${index * delayStep}s`;
       }
     });
   });
 
-  document.querySelectorAll(".glass-card").forEach((card) => {
-    card.style.opacity = 0;
-    card.style.transform = "translateY(30px)";
-    card.style.transition = "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
-    observer.observe(card);
+  document.querySelectorAll(selector).forEach((element) => {
+    element.style.opacity = 0;
+    element.style.transform = "translateY(30px)";
+    element.style.transition = "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
+    observer.observe(element);
   });
 }
 
+function initFormValidation() {
+  document.querySelector(".contact-form").addEventListener("submit", (e) => {
+    const email = document.getElementById("email").value;
+    if (!isValidEmail(email)) {
+      e.preventDefault();
+      showError("Введите корректный email");
+    }
+  });
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function updateCryptoPrices() {
+  const container = document.querySelector(".crypto-prices");
+  container.innerHTML = cryptoData
+    .map(
+      (coin) => `
+        <div class="price-card ${coin.symbol.split("/")[0].toLowerCase()}">
+            <span class="symbol">${coin.symbol}</span>
+            <span class="price">$${coin.price.toFixed(2)}</span>
+            <span class="change ${coin.change >= 0 ? "positive" : "negative"}">
+                ${coin.change >= 0 ? "+" : ""}${coin.change.toFixed(1)}%
+            </span>
+        </div>
+    `
+    )
+    .join("");
+}
+
 function updateChart() {
-  chart.data.datasets[0].data = generateMockChartData();
-  chart.update();
+  if (chart) {
+    chart.data.datasets[0].data = generateMockChartData();
+    chart.update();
+  }
 }
