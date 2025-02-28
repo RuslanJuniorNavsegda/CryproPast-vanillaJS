@@ -1,56 +1,67 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoPast Exchange</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <header>
-      <h1 class="exchange-title">CryptoPast</h1>
-    </header>
-
-    <div class="crypto-prices">
-      <div class="price-card btc">
-        <span class="symbol">BTC/USDT</span>
-        <span class="price">$45,230.50</span>
-        <span class="change positive">+2.4%</span>
-      </div>
-      <div class="price-card eth">
-        <span class="symbol">ETH/USDT</span>
-        <span class="price">$2,450.75</span>
-        <span class="change negative">-1.2%</span>
-      </div>
-      <div class="price-card sol">
-        <span class="symbol">SOL/USDT</span>
-        <span class="price">$98.20</span>
-        <span class="change positive">+5.1%</span>
-      </div>
+</head>
+<body>
+    <!-- Переключатель тем -->
+    <div class="theme-switcher" onclick="toggleTheme()">
+        <div class="switch-handle"></div>
     </div>
 
+    <!-- Шапка -->
+    <header>
+        <h1 class="exchange-title">CryptoPast</h1>
+    </header>
+
+    <!-- Секция с ценами -->
+    <div class="crypto-prices">
+        <div class="price-card btc">
+            <span class="symbol">BTC/USDT</span>
+            <span class="price">$45,230.50</span>
+            <span class="change positive">+2.4%</span>
+        </div>
+        <div class="price-card eth">
+            <span class="symbol">ETH/USDT</span>
+            <span class="price">$2,450.75</span>
+            <span class="change negative">-1.2%</span>
+        </div>
+        <div class="price-card sol">
+            <span class="symbol">SOL/USDT</span>
+            <span class="price">$98.20</span>
+            <span class="change positive">+5.1%</span>
+        </div>
+    </div>
+
+    <!-- Основной контейнер -->
     <div class="container">
-      <div class="chart-container">
-        <h2>BTC/USDT</h2>
-        <canvas id="priceChart"></canvas>
-      </div>
+        <!-- График -->
+        <div class="chart-container">
+            <h2>BTC/USDT</h2>
+            <canvas id="priceChart"></canvas>
+        </div>
 
-      <div class="orderbook">
-        <h3>Ордера</h3>
-        <table class="order-table">
-          <tbody id="orderList"></tbody>
-        </table>
-      </div>
+        <!-- Список ордеров -->
+        <div class="orderbook">
+            <h3>Ордера</h3>
+            <table class="order-table">
+                <tbody id="orderList"></tbody>
+            </table>
+        </div>
 
-      <div class="trade-panel">
-        <input type="number" id="priceInput" placeholder="Цена" />
-        <input type="number" id="amountInput" placeholder="Количество" />
-        <button class="buy-btn" onclick="placeOrder('buy')">Купить</button>
-        <button class="sell-btn" onclick="placeOrder('sell')">Продать</button>
-      </div>
+        <!-- Торговая панель -->
+        <div class="trade-panel">
+            <input type="number" id="priceInput" placeholder="Цена">
+            <input type="number" id="amountInput" placeholder="Количество">
+            <button class="buy-btn" onclick="placeOrder('buy')">Купить</button>
+            <button class="sell-btn" onclick="placeOrder('sell')">Продать</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>

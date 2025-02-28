@@ -15,6 +15,7 @@ let chart;
 let wsConnection = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadSavedTheme();
   initChart();
   updateOrderBook();
   updateCryptoPrices();
@@ -31,7 +32,9 @@ function initChart() {
         {
           label: "BTC/USDT",
           data: generateMockChartData(),
-          borderColor: "#2172E5",
+          borderColor: getComputedStyle(
+            document.documentElement
+          ).getPropertyValue("--accent"),
           borderWidth: 2,
           pointRadius: 0,
           tension: 0.4,
@@ -49,14 +52,28 @@ function initChart() {
         y: {
           beginAtZero: false,
           ticks: {
-            color: "#fff",
+            color: () =>
+              getComputedStyle(document.body).getPropertyValue("--text"),
             callback: (value) => `$${value.toLocaleString()}`,
           },
-          grid: { color: "rgba(255,255,255,0.1)" },
+          grid: {
+            color: () =>
+              `rgba(${hexToRgb(
+                getComputedStyle(document.body).getPropertyValue("--text")
+              )}, 0.1)`,
+          },
         },
         x: {
-          ticks: { color: "#fff" },
-          grid: { color: "rgba(255,255,255,0.1)" },
+          ticks: {
+            color: () =>
+              getComputedStyle(document.body).getPropertyValue("--text"),
+          },
+          grid: {
+            color: () =>
+              `rgba(${hexToRgb(
+                getComputedStyle(document.body).getPropertyValue("--text")
+              )}, 0.1)`,
+          },
         },
       },
       plugins: {
@@ -84,6 +101,14 @@ function generateTimeLabels() {
       });
     })
     .reverse();
+}
+
+function hexToRgb(hex) {
+  hex = hex.replace("#", "");
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  return `${r}, ${g}, ${b}`;
 }
 
 function updateCryptoPrices() {
@@ -141,8 +166,6 @@ function placeOrder(type) {
   updateChart();
   clearInputs();
 }
-
-// Вспомогательные функции
 function clearInputs() {
   document.getElementById("priceInput").value = "";
   document.getElementById("amountInput").value = "";
@@ -156,7 +179,6 @@ function showError(message) {
   setTimeout(() => errorDiv.remove(), 3000);
 }
 
-// WebSocket
 function initWebSocket() {
   wsConnection = new WebSocket(
     "wss://stream.binance.com:9443/ws/btcusdt@trade"
@@ -186,6 +208,38 @@ function handleRealTimeData(data) {
   chart.update();
 
   updateCryptoPrices();
+}
+
+function toggleTheme() {
+  const body = document.body;
+  body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "theme",
+    body.classList.contains("light-theme") ? "light" : "dark"
+  );
+  updateChartColors();
+}
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.body.classList.toggle("light-theme", savedTheme === "light");
+  updateChartColors();
+}
+
+function updateChartColors() {
+  chart.options.scales.x.ticks.color = getComputedStyle(
+    document.body
+  ).getPropertyValue("--text");
+  chart.options.scales.y.ticks.color = getComputedStyle(
+    document.body
+  ).getPropertyValue("--text");
+  chart.options.scales.y.grid.color = `rgba(${hexToRgb(
+    getComputedStyle(document.body).getPropertyValue("--text")
+  )}, 0.1)`;
+  chart.options.scales.x.grid.color = `rgba(${hexToRgb(
+    getComputedStyle(document.body).getPropertyValue("--text")
+  )}, 0.1)`;
+  chart.update();
 }
 
 function updateChart() {
