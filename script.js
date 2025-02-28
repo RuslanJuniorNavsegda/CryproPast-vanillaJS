@@ -22,7 +22,6 @@ let wsConnection = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   loadSavedTheme();
-  initChart();
   updateOrderBook();
   updateCryptoPrices();
   updateWalletDisplay();
@@ -228,13 +227,16 @@ function toggleTheme() {
     "theme",
     body.classList.contains("light-theme") ? "light" : "dark"
   );
-  updateChartColors();
+
+  if (chart) chart.destroy();
+  initChart();
 }
 
 function loadSavedTheme() {
   const savedTheme = localStorage.getItem("theme") || "dark";
   document.body.classList.toggle("light-theme", savedTheme === "light");
-  updateChartColors();
+
+  initChart();
 }
 
 function updateChartColors() {
